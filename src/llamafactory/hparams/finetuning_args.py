@@ -8,7 +8,7 @@ class FreezeArguments:
     Arguments pertaining to the freeze (partial-parameter) training.
     """
 
-    freeze_trainable_layers: int = field(
+    freeze_trainable_layers: Optional[int] = field(
         default=2,
         metadata={
             "help": (

@@ -78,9 +78,11 @@ def init_adapter(
 
             stride = num_layers // finetuning_args.freeze_trainable_layers
             trainable_layer_ids = range(stride - 1, num_layers + stride - 1, stride)
-        elif finetuning_args.freeze_trainable_layers > 0:  # fine-tuning the last n layers if num_layer_trainable > 0
+        elif isinstance(finetuning_args.freeze_trainable_layers, list):
+            trainable_layer_ids = finetuning_args.freeze_trainable_layers.copy()
+        elif isinstance(finetuning_args.freeze_trainable_layers, int) and finetuning_args.freeze_trainable_layers > 0:  # fine-tuning the last n layers if num_layer_trainable > 0
             trainable_layer_ids = range(max(0, num_layers - finetuning_args.freeze_trainable_layers), num_layers)
-        else:  # fine-tuning the first n layers if num_layer_trainable < 0
+        elif isinstance(finetuning_args.freeze_trainable_layers, int) and finetuning_args.freeze_trainable_layers < 0:  # fine-tuning the first n layers if num_layer_trainable < 0
             trainable_layer_ids = range(min(-finetuning_args.freeze_trainable_layers, num_layers))
 
         hidden_modules = set()
